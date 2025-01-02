@@ -18,60 +18,103 @@
         <h1>注册/登录</h1>
         <label for="username">用户名</label>
         <input type="text" id="username" name="username" required><br />
-        <label for="code">密码 &nbsp;&nbsp; </label>
+        <label for="password">密码</label>
         <input type="password" id="password" name="password" required><br />
+        <div id="message-box"></div>
         <button type="button" id="login-btn">登录</button> &nbsp;
         <button type="button" id="register-btn">注册</button><br />
-        <label for="agree">我已阅读并同意登录/注册<a href="#">服务协议</a> 和<a href="#">隐私保护指引</a></label>
     </form>
 
     <script>
-        // 后端 API 地址
-        const LOGIN_API = '/login';
-        const REGISTER_API = '/register';
+        const LOGIN_API = 'http://127.0.0.1:5000/login';
+        const REGISTER_API = 'http://127.0.0.1:5000/register';
 
-        // 登录功能
-        document.getElementById('login-btn').addEventListener('click', async function (e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            const response = await fetch(LOGIN_API, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-
-            const result = await response.json();
-            alert(result.message);
-            if (response.ok) {
-                localStorage.setItem('username', username); // 保存用户名到 localStorage
-                window.location.href = 'index.html'; // 登录成功跳转首页
+        function validateInput(username, password) {
+            if (username.length < 3 || username.length > 20) {
+                showMessage('用户名长度必须在3到20个字符之间', false);
+                return false;
             }
-        });
-
-        // 注册功能
-        document.getElementById('register-btn').addEventListener('click', async function (e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            const response = await fetch(REGISTER_API, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-
-            const result = await response.json();
-            alert(result.message);
-            if (response.ok) {
-                alert('注册成功，请登录！');
+            if (password.length < 6) {
+                showMessage('密码长度不能少于6个字符', false);
+                return false;
             }
-        });
+            return true;
+        }
+
+        function showMessage(message, isSuccess = true) {
+            const messageBox = document.getElementById('message-box');
+            messageBox.style.color = isSuccess ? 'green' : 'red';
+            messageBox.innerText = message;
+        }
+
+        async function handleLogin() {
+            const loginBtn = document.getElementById('login-btn');
+            loginBtn.disabled = true;
+            loginBtn.innerText = '登录中...';
+
+            try {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                if (!validateInput(username, password)) return;
+
+                const response = await fetch(LOGIN_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    showMessage('登录成功', true);
+                    localStorage.setItem('username', username);
+                    window.location.href = localStorage.getItem('redirectUrl') || 'index.html';
+                } else {
+                    showMessage(result.message, false);
+                }
+            } catch (error) {
+                showMessage('网络错误，请稍后再试', false);
+                console.error('Fetch error:', error);
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerText = '登录';
+            }
+        }
+
+        async function handleRegister() {
+            const registerBtn = document.getElementById('register-btn');
+            registerBtn.disabled = true;
+            registerBtn.innerText = '注册中...';
+
+            try {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                if (!validateInput(username, password)) return;
+
+                const response = await fetch(REGISTER_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    showMessage('注册成功，请登录！', true);
+                } else {
+                    showMessage(result.message, false);
+                }
+            } catch (error) {
+                showMessage('网络错误，请稍后再试', false);
+                console.error('Fetch error:', error);
+            } finally {
+                registerBtn.disabled = false;
+                registerBtn.innerText = '注册';
+            }
+        }
+
+        document.getElementById('login-btn').addEventListener('click', handleLogin);
+        document.getElementById('register-btn').addEventListener('click', handleRegister);
     </script>
 </body>
 

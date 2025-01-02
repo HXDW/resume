@@ -1,80 +1,103 @@
-from flask import Flask, request, jsonify, redirect, url_for
-import sqlite3
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import pymysql
 
 app = Flask(__name__)
+CORS(app)
 
-# 数据库初始化
-def init_db():
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL,
-            is_logged_in BOOLEAN DEFAULT 0
-        )
-    """)
-    conn.commit()
-    conn.close()
+# 数据库配置
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '123456',
+    'database': 'resume_site',
+    'charset': 'utf8mb4'
+}
 
-# 注册用户
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
     username = data.get('username')
     password = data.get('password')
 
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
     try:
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        # 尝试连接数据库
+        conn = pymysql.connect(**db_config)
+        cursor = conn.cursor()
+
+        # 插入用户数据
+        cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
         conn.commit()
         return jsonify({"message": "注册成功"}), 200
-    except sqlite3.IntegrityError:
-        return jsonify({"message": "用户名已存在"}), 400
-    finally:
-        conn.close()
 
-# 登录
+    # 捕获用户名已存在的错误
+    except pymysql.err.IntegrityError:
+        return jsonify({"message": "用户名已存在"}), 400
+
+    # 捕获数据库连接相关错误
+    except pymysql.MySQLError as e:
+        print(f"Database error during registration: {e}")
+        return jsonify({"message": "数据库连接失败"}), 500
+
+    # 确保连接始终关闭
+    finally:
+        if 'conn' in locals() and conn:
+            conn.close()
+
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
     username = data.get('username')
     password = data.get('password')
 
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
     try:
-        c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
-        user = c.fetchone()
+        # 尝试连接数据库
+        conn = pymysql.connect(**db_config)
+        cursor = conn.cursor()
+
+        # 查询用户
+        cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+        user = cursor.fetchone()
+
+        # 登录逻辑
         if user:
-            c.execute("UPDATE users SET is_logged_in = 1 WHERE username = ?", (username,))
+            cursor.execute("UPDATE users SET is_logged_in = TRUE WHERE username = %s", (username,))
             conn.commit()
             return jsonify({"message": "登录成功"}), 200
         else:
             return jsonify({"message": "用户名或密码错误"}), 401
-    except sqlite3.Error as e:
-        print(f"数据库错误: {e}")
-        return jsonify({"message": "服务器内部错误"}), 500
-    finally:
-        conn.close()
 
-# 检查登录状态
+    # 捕获数据库连接相关错误
+    except pymysql.MySQLError as e:
+        print(f"Database error during login: {e}")
+        return jsonify({"message": "数据库连接失败"}), 500
+
+    # 确保连接始终关闭
+    finally:
+        if 'conn' in locals() and conn:
+            conn.close()
+
+
+# 检查用户登录状态
 @app.route('/is_logged_in', methods=['GET'])
 def is_logged_in():
     username = request.args.get('username')
 
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute("SELECT is_logged_in FROM users WHERE username = ?", (username,))
-    user = c.fetchone()
+    conn = pymysql.connect(**db_config)
+    cursor = conn.cursor()
+    cursor.execute("SELECT is_logged_in FROM users WHERE username = %s", (username,))
+    user = cursor.fetchone()
     conn.close()
-    if user and user[0] == 1:
+    if user and user[0]:
         return jsonify({"is_logged_in": True}), 200
     return jsonify({"is_logged_in": False}), 200
 
-# 启动服务
+# 默认路由
+@app.route('/')
+def home():
+    return "Welcome to the Flask App!"
+
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)
