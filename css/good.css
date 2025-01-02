@@ -1,0 +1,52 @@
+.banner img{
+  height: 600px;
+}
+.school-list{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  margin-top: 20px;
+}
+.school button{
+  width: 200px;
+  height: 40px;
+ background-color: #FFCDD8;
+ border: none;
+ border-radius: 10px;
+ color: white;
+ font-size: 22px;
+ font-weight: bold;
+
+ /* position: absolute;
+ left: 40%; */
+ margin-top: 20px;
+}
+.school .btn{
+  display: flex;
+  justify-content: center;
+}
+.school-list img{
+  width: 380px;
+  height: 400px;
+}
+.school-list li{
+  list-style: none;
+  margin: 0 20px;
+}
+.school-list p{
+  margin-top: 40px;
+  line-height: 26px;
+}
+.photo-list img{
+  width: 260px;
+  height: 300px;
+}
+.photo-list{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+}
+.photo-list li{
+  list-style: none;
+  margin: 20px 20px;
+}

@@ -1,0 +1,24 @@
+.item{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  margin-top: 20px;
+}
+
+.item li{
+  list-style: none;
+  margin: 0 90px;
+}
+.item img{
+  margin-top: 20px;
+  width: 300px;
+  height: 300px;
+}
+.item .text{
+  margin-top: 40px;
+  width: 500px;
+  line-height: 30px;
+}
+.banner img{
+  height: 600px;
+}

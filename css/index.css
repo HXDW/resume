@@ -1,0 +1,113 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  background-color: #FFC0CB;
+}
+.nav{
+  max-width: 1200px;
+  margin: 0 auto;
+ 
+  background-color: #FFCDD8;
+  display: flex;
+  justify-content: space-around;
+  line-height: 40px;
+  
+}
+.nav li{
+  list-style: none;
+  height: 60px;
+  line-height: 60px;
+}
+.nav li a{
+  text-decoration: none;
+  color: black;
+}
+.banner,.person,.home{
+  width: 1200px;
+  margin: 0 auto;
+  
+}
+.banner img{
+  width: 1200px;
+}
+
+.person button,.home button{
+  width: 200px;
+  height: 40px;
+ background-color: #FFCDD8;
+ border: none;
+ border-radius: 10px;
+ color: white;
+ font-size: 22px;
+ font-weight: bold;
+
+ /* position: absolute;
+ left: 40%; */
+ margin-top: 20px;
+}
+.person .btn,.home .btn{
+  display: flex;
+  justify-content: center;
+}
+.person-list{
+  margin-top: 40px;
+  display: flex;
+}
+.person-list img{
+  width: 240px;
+  height: 340px;
+
+}
+.person-list li{
+  list-style: none;
+  margin: 0 20px;
+}
+.person-list .text{
+  width: 400px;
+  height: 304px;
+  line-height: 27px;
+  border: 1px solid #D5A37F;
+  padding: 15px;
+}
+.person-list .text h3{
+  margin-bottom: 5px;
+}
+.person-list .word{
+  width: 400px;
+  height: 304px;
+  line-height: 23px;
+  border: 1px solid #D5A37F;
+  padding: 15px;
+}
+.person-list .word h2{
+  margin-bottom: 10px;
+  text-align: center;
+}
+.home-list img{
+  width: 200px;
+  height: 200px;
+}
+.home-list{
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.home-list li{
+  list-style: none;
+  margin: 0 55px;
+}
+.footer{
+ 
+  max-width: 1200px;
+  height: 50px;
+  margin: 0 auto;
+  background-color: #FFCDD8;
+  text-align: center;
+  line-height: 50px;
+  color: aliceblue;
+}
+.banner img{
+  height: 600px;
+}
