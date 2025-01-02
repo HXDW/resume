@@ -13,16 +13,66 @@
 <body>
     <div class="box1"><img src="images/l.jpeg" alt=""> </div>
 
-    <form class="container">
+    <form class="container" id="auth-form">
         <div class="box4"><span class="iconfont icon-robot-img"></span></div>
         <h1>注册/登录</h1>
         <label for="username">用户名</label>
-        <input type="text" id="username" required><br />
+        <input type="text" id="username" name="username" required><br />
         <label for="code">密码 &nbsp;&nbsp; </label>
-        <input type="password" id="code" required><br />
-        <a href="index.html" class="login-btn">登录</a> &nbsp;<input type="submit" value="注册"><br />
+        <input type="password" id="password" name="password" required><br />
+        <button type="button" id="login-btn">登录</button> &nbsp;
+        <button type="button" id="register-btn">注册</button><br />
         <label for="agree">我已阅读并同意登录/注册<a href="#">服务协议</a> 和<a href="#">隐私保护指引</a></label>
     </form>
+
+    <script>
+        // 后端 API 地址
+        const LOGIN_API = '/login';
+        const REGISTER_API = '/register';
+
+        // 登录功能
+        document.getElementById('login-btn').addEventListener('click', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch(LOGIN_API, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            if (response.ok) {
+                localStorage.setItem('username', username); // 保存用户名到 localStorage
+                window.location.href = 'index.html'; // 登录成功跳转首页
+            }
+        });
+
+        // 注册功能
+        document.getElementById('register-btn').addEventListener('click', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch(REGISTER_API, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            if (response.ok) {
+                alert('注册成功，请登录！');
+            }
+        });
+    </script>
 </body>
 
 </html>
