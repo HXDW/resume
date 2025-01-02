@@ -1,113 +1,171 @@
+/* 重置默认样式 */
 *{
   margin: 0;
   padding: 0;
 }
-body{
+
+/* 全局设置 */
+body {
   background-color: #FFC0CB;
+  font-family: 'YouYuan', '幼圆', sans-serif;
 }
-.nav{
+
+/* 导航栏样式 */
+.nav {
   max-width: 1200px;
   margin: 0 auto;
- 
   background-color: #FFCDD8;
   display: flex;
   justify-content: space-around;
   line-height: 40px;
-  
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.nav li{
+
+.nav li {
   list-style: none;
   height: 60px;
   line-height: 60px;
 }
-.nav li a{
+
+.nav li a {
   text-decoration: none;
   color: black;
-}
-.banner,.person,.home{
-  width: 1200px;
-  margin: 0 auto;
-  
-}
-.banner img{
-  width: 1200px;
+  font-weight: bold;
+  font-size: 18px;
 }
 
-.person button,.home button{
+.nav li a:hover {
+  color: #FF69B4;
+}
+
+/* Banner 样式 */
+.banner, .person, .home {
+  width: 1200px;
+  margin: 20px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.banner img {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+
+/* 按钮样式 */
+.person button, .home button {
   width: 200px;
   height: 40px;
- background-color: #FFCDD8;
- border: none;
- border-radius: 10px;
- color: white;
- font-size: 22px;
- font-weight: bold;
-
- /* position: absolute;
- left: 40%; */
- margin-top: 20px;
+  background-color: #FF69B4;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-.person .btn,.home .btn{
+
+.person button:hover, .home button:hover {
+  background-color: #FF1493;
+}
+
+.person .btn, .home .btn {
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 }
-.person-list{
+
+/* 个人介绍部分 */
+.person-list {
   margin-top: 40px;
   display: flex;
 }
-.person-list img{
+
+.person-list img {
   width: 240px;
   height: 340px;
-
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.person-list li{
+
+.person-list img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.person-list li {
   list-style: none;
   margin: 0 20px;
 }
-.person-list .text{
+
+.person-list .text {
   width: 400px;
   height: 304px;
   line-height: 27px;
   border: 1px solid #D5A37F;
   padding: 15px;
+  border-radius: 10px;
+  background-color: #FFF5F5;
 }
-.person-list .text h3{
+
+.person-list .text h3 {
   margin-bottom: 5px;
+  font-family: 'DengXian Light', '等线 Light', sans-serif;
 }
-.person-list .word{
+
+.person-list .word {
   width: 400px;
   height: 304px;
   line-height: 23px;
   border: 1px solid #D5A37F;
   padding: 15px;
+  border-radius: 10px;
+  background-color: #FFF5F5;
 }
-.person-list .word h2{
+
+.person-list .word h2 {
   margin-bottom: 10px;
   text-align: center;
+  font-family: 'DengXian Light', '等线 Light', sans-serif;
 }
-.home-list img{
+
+/* 家乡图片部分 */
+.home-list {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.home-list img {
   width: 200px;
   height: 200px;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.home-list{
-  display: flex;
-  margin-top: 20px;
-  margin-bottom: 20px;
+
+.home-list img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.home-list li{
+
+.home-list li {
   list-style: none;
-  margin: 0 55px;
+  margin: 0 20px;
 }
-.footer{
- 
+
+/* 底部样式 */
+.footer {
   max-width: 1200px;
   height: 50px;
-  margin: 0 auto;
+  margin: 20px auto 0;
   background-color: #FFCDD8;
   text-align: center;
   line-height: 50px;
-  color: aliceblue;
-}
-.banner img{
-  height: 600px;
+  color: #FFFFFF;
+  border-radius: 10px;
+  font-size: 14px;
 }
